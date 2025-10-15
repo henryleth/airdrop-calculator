@@ -14,9 +14,9 @@ CommonToken projesi için hazırlanmış airdrop allocation hesaplayıcısı.
 
 - **Toplam Supply**: 10 milyar token
 - **NFT**: 85M token (%0.85)
-- **Historical**: 5M token (%0.05)  
+- **Historical**: 50M token (%0.5)  
 - **Aura**: 50M token (%0.5)
-- **Diğer/Reserve**: 9.86B token (%98.6)
+- **Diğer/Reserve**: 9.815B token (%98.15)
 
 ## Kullanım
 
