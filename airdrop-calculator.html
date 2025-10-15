@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modularity </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+            line-height: 1.6;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #1f2937;
+            color: white;
+            padding: 24px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .content {
+            padding: 24px;
+        }
+
+        .section {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #111827;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .calculate-btn {
+            background: #1f2937;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .calculate-btn:hover {
+            background: #374151;
+        }
+
+        .results {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .results h2 {
+            color: #0c4a6e;
+            border-bottom: 1px solid #bae6fd;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0f2fe;
+            font-size: 14px;
+        }
+
+        .result-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            background: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            border: 1px solid #bae6fd;
+            font-size: 13px;
+        }
+
+        .nft-list {
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .nft-item {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 80px;
+            gap: 8px;
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
+            align-items: center;
+        }
+
+        .nft-item:last-child {
+            border-bottom: none;
+        }
+
+        .nft-item input {
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .nft-item select {
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .add-nft-btn {
+            background: #059669;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .remove-nft-btn {
+            background: #dc2626;
+            color: white;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .info-box {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 13px;
+            color: #92400e;
+        }
+
+        .final-result {
+            background: #10b981 !important;
+            color: white !important;
+            font-weight: 600;
+            font-size: 16px !important;
+            padding: 12px 0 !important;
+        }
+
+        .final-result .result-value {
+            background: rgba(255,255,255,0.2) !important;
+            border-color: rgba(255,255,255,0.3) !important;
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .percentage-result {
+            background: #059669 !important;
+            color: white !important;
+            font-weight: 600;
+        }
+
+        .percentage-result .result-value {
+            background: rgba(255,255,255,0.2) !important;
+            border-color: rgba(255,255,255,0.3) !important;
+            color: white !important;
+        }
+
+        .dollar-result {
+            background: #f59e0b !important;
+            color: white !important;
+            font-size: 18px !important;
+            font-weight: 600;
+        }
+
+        .dollar-result .result-value {
+            background: rgba(255,255,255,0.2) !important;
+            border-color: rgba(255,255,255,0.3) !important;
+            color: white !important;
+            font-weight: bold;
+            font-size: 16px !important;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content {
+                padding: 16px;
+            }
+            
+            .section {
+                padding: 16px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .nft-item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .result-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+                text-align: left;
+            }
+            
+            .result-value {
+                text-align: center;
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Modularity</h1>
+            <p>NFT, Historical ve Aura allocation hesaplayıcısı</p>
+            <p style="font-size: 1rem; margin-top: 8px; opacity: 0.7;">Total Supply: 10B tokens</p>
+        </div>
+
+        <div class="content">
+            <!-- NFT Section -->
+            <div class="section">
+                <h2>NFT Allocation</h2>
+                <div class="form-group">
+                    <label>Token Supply (NFT Havuzu)</label>
+                    <input type="number" id="nftTokenSupply" value="85000000" min="0" readonly style="background: #f1f5f9;">
+                    <div class="info-box">
+                        🔒 Sabit: 85M token (toplam 10B token'ın %0.85'i)
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Equal Distribution %</label>
+                        <input type="number" id="equalDistPercent" value="0.6" min="0" max="1" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Rarity Distribution %</label>
+                        <input type="number" id="rarityDistPercent" value="0.4" min="0" max="1" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Rarity Percentiles (virgülle ayırın)</label>
+                    <input type="text" id="rarityPercentiles" value="100,75,15,6.5,3.5">
+                </div>
+
+                <div class="form-group">
+                    <label>Rarity Weights by Percentile (virgülle ayırın)</label>
+                    <input type="text" id="rarityWeights" value="1,5,10,20,50">
+                </div>
+
+                <div class="form-group">
+                    <label>NFT Koleksiyonunuz</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Common NFT Adeti</label>
+                            <input type="number" id="commonNFTs" value="3" min="0" placeholder="0">
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">1x ağırlık</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Uncommon NFT Adeti</label>
+                            <input type="number" id="uncommonNFTs" value="0" min="0" placeholder="0">
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">5x ağırlık</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Rare NFT Adeti</label>
+                            <input type="number" id="rareNFTs" value="0" min="0" placeholder="0">
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">10x ağırlık</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Epic NFT Adeti</label>
+                            <input type="number" id="epicNFTs" value="0" min="0" placeholder="0">
+                            <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">20x ağırlık</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Legendary NFT Adeti</label>
+                            <input type="number" id="legendaryNFTs" value="1" min="0" placeholder="0">
+                        <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">50x ağırlık</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historic Section -->
+            <div class="section">
+                <h2>Historical & Aura Allocation</h2>
+                
+                <div class="info-box">
+                    <strong>Token Dağılımı:</strong><br>
+                    Historical: 5M (%0.05) • Aura: 50M (%0.5) • NFT: 85M (%0.85)<br>
+                    Toplam Airdrop: 140M (%1.4) • Total Supply: 10B
+                </div>
+
+                <div class="form-group">
+                    <label>Total Historical+Aura Supply</label>
+                    <input type="number" id="historicTotalSupply" value="55000000" min="0" readonly style="background: #f1f5f9;">
+                    <div class="info-box">
+                        Sabit: 55M token (5M Historical + 50M Aura)
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Historical Allocation</label>
+                        <input type="number" id="historicalSplit" value="0.0909" min="0" max="1" step="0.0001" readonly style="background: #f1f5f9;">
+                        <div class="info-box">5M token (%9.09 of H+A pool)</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Aura Allocation</label>
+                        <input type="number" id="auraSplit" value="0.9091" min="0" max="1" step="0.0001" readonly style="background: #f1f5f9;">
+                        <div class="info-box">50M token (%90.91 of H+A pool)</div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="communitySplit" value="0">
+
+                <h3 style="margin: 16px 0 12px 0; font-size: 1rem; color: #374151;">Historical Aktiviteler</h3>
+                
+                <div class="info-box">
+                    Puanlama sistemi tahminidir. Değerleri değiştirebilirsiniz.
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Thread Sayısı</label>
+                        <input type="number" id="numThreads" value="25" min="0">
+                        <input type="number" id="threadWeight" value="10" min="1" style="width: 60px; display: inline-block; margin-left: 8px;" onchange="calculateTotalHistoricalScore()">
+                        <span style="font-size: 12px; color: #666;"> puan</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Comment Sayısı</label>
+                        <input type="number" id="numComments" value="85" min="0">
+                        <input type="number" id="commentWeight" value="2" min="1" style="width: 60px; display: inline-block; margin-left: 8px;" onchange="calculateTotalHistoricalScore()">
+                        <span style="font-size: 12px; color: #666;"> puan</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Upvote Sayısı</label>
+                    <input type="number" id="numUpvotes" value="0" min="0">
+                    <input type="number" id="upvoteWeight" value="1" min="1" style="width: 60px; display: inline-block; margin-left: 8px;" onchange="calculateTotalHistoricalScore()">
+                    <span style="font-size: 12px; color: #666;"> puan</span>
+                </div>
+
+                <!-- Community inputs hidden since community split is 0 -->
+                <input type="hidden" id="eventParticipation" value="0">
+                <input type="hidden" id="discordActivity" value="0">
+                <input type="hidden" id="referralCount" value="0">
+                <input type="hidden" id="contestWins" value="0">
+
+                <h3 style="margin: 16px 0 12px 0; font-size: 1rem; color: #374151;">Aura</h3>
+                <div class="form-group">
+                    <label>Total XP</label>
+                    <input type="number" id="totalXP" value="0" min="0">
+                </div>
+            </div>
+
+            <!-- FDV Section -->
+            <div class="section">
+                <h2>FDV & Dolar Değeri</h2>
+                <div class="form-group">
+                    <label>Fully Diluted Valuation (FDV)</label>
+                    <select id="fdvSelection" style="font-size: 16px; font-weight: bold;">
+                        <option value="0">FDV Seçiniz</option>
+                        <option value="350000000">$350M</option>
+                        <option value="500000000" selected>$500M</option>
+                        <option value="750000000">$750M</option>
+                        <option value="1000000000">$1B</option>
+                        <option value="1500000000">$1.5B</option>
+                        <option value="2000000000">$2B</option>
+                    </select>
+                    <div class="info-box">
+                        FDV seçerek token'larınızın tahmini dolar değerini hesaplayın
+                    </div>
+                </div>
+                
+                <div class="form-group" id="tokenPriceDisplay" style="display: none;">
+                    <label>Token Fiyatı</label>
+                    <div style="background: #f3f4f6; padding: 12px; border-radius: 6px; text-align: center; font-weight: 600;">
+                        $<span id="tokenPrice">0.00</span> / token
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden User Tier (for compatibility, always set to 1) -->
+            <input type="hidden" id="userTier" value="1">
+
+            <!-- Global Pools Section -->
+            <div class="section">
+                <h2>Global Pool Bilgileri</h2>
+                <div class="info-box">
+                    Bu değerler gerçek hesaplama için gerekli toplam pool bilgileridir. Gerçek verilerle güncelleyin.
+                </div>
+
+                <div class="form-group">
+                    <label>Toplam Uygun NFT Sayısı</label>
+                    <input type="number" id="totalNFTs" value="4500" min="1" readonly style="background: #f1f5f9;">
+                    <div class="info-box">
+                        Gerçek veri: 4,500 NFT
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <label>Toplam Historical Score (Tüm Kullanıcılar)</label>
+                        <input type="number" id="totalHistoricalScore" value="1088990" min="1" readonly style="background: #f1f5f9;">
+                        <div class="info-box" id="historicalScoreInfo">
+                            <span id="historicalScoreBreakdown"></span>
+                        </div>
+                    </div>
+
+                <input type="hidden" id="totalCommunityScore" value="1">
+
+                <div class="form-group">
+                    <label>Toplam Aura Score (Tüm Kullanıcılar)</label>
+                    <input type="number" id="totalAuraScore" value="2650000" min="1" readonly style="background: #f1f5f9;">
+                    <div class="info-box">
+                        Gerçek veri: 2,650,000 total aura
+                    </div>
+                </div>
+            </div>
+
+            <button class="calculate-btn" onclick="calculateAllocation()">
+                Allocation Hesapla
+            </button>
+
+            <!-- Results Section -->
+            <div class="results" id="results" style="display: none;">
+                <h2>Hesaplama Sonuçları</h2>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Input validation helper
+        function validateInputs(config) {
+            const errors = [];
+            
+            // Validate NFT config
+            if (Math.abs(config.nft.equalDistPercent + config.nft.rarityDistPercent - 1) > 0.01) {
+                errors.push('NFT Equal + Rarity dağıtım yüzdeleri toplamı 1 olmalı');
+            }
+            
+            if (Math.abs(config.historic.historicalSplit + config.historic.communitySplit + config.historic.auraSplit - 1) > 0.01) {
+                errors.push('Historical + Community + Aura split yüzdeleri toplamı 1 olmalı');
+            }
+            
+            if (config.nft.rarityPercentiles.length !== config.nft.rarityWeights.length) {
+                errors.push('Rarity percentiles ve weights sayısı eşit olmalı');
+            }
+            
+            if (config.nft.tokenSupply <= 0 || config.historic.totalSupply <= 0) {
+                errors.push('Token supply değerleri pozitif olmalı');
+            }
+            
+            if (config.global.totalNFTs <= 0 || config.global.totalHistoricalScore <= 0 || config.global.totalCommunityScore <= 0 || config.global.totalAuraScore <= 0) {
+                errors.push('Global pool değerleri pozitif olmalı');
+            }
+            
+            return errors;
+        }
+
+        // Main calculation function
+        function calculateAllocation() {
+            try {
+                // Get all input values
+                const config = getConfigFromInputs();
+                
+                // Validate inputs
+                const validationErrors = validateInputs(config);
+                if (validationErrors.length > 0) {
+                    alert('Giriş hatası:\n' + validationErrors.join('\n'));
+                    return;
+                }
+                
+                const userTierMultiplier = parseFloat(document.getElementById('userTier').value);
+                
+                // Tier system removed for simplicity
+
+                // Calculate NFT allocation
+                const nftAllocation = calculateNFTAllocation(config);
+                
+                // Calculate Historical allocation
+                const historicalAllocation = calculateHistoricalAllocation(config);
+                
+                // Calculate Community allocation
+                const communityAllocation = calculateCommunityAllocation(config);
+                
+                // Calculate Aura allocation
+                const auraAllocation = calculateAuraAllocation(config);
+                
+                // Calculate totals (tier multiplier already applied in scripts!)
+                const finalTotal = nftAllocation.total + historicalAllocation + communityAllocation + auraAllocation;
+                
+                // Calculate percentages
+                const totalSupply = 10000000000; // 10 billion
+                const percentageOfSupply = (finalTotal / totalSupply) * 100;
+                
+                // Calculate dollar value if FDV is selected
+                const fdv = parseFloat(document.getElementById('fdvSelection').value) || 0;
+                let dollarValue = 0;
+                let tokenPrice = 0;
+                
+                if (fdv > 0) {
+                    tokenPrice = fdv / totalSupply;
+                    dollarValue = finalTotal * tokenPrice;
+                }
+                
+                // Results (tier multiplier already included in script calculations)
+                const results = {
+                    nftEqual: nftAllocation.equal,
+                    nftRarity: nftAllocation.rarity,
+                    nftTotal: nftAllocation.total,
+                    userRarityScore: nftAllocation.userRarityScore,
+                    estimatedTotalRarityScore: nftAllocation.estimatedTotalRarityScore,
+                    historical: historicalAllocation,
+                    community: communityAllocation,
+                    aura: auraAllocation,
+                    totalBeforeTier: finalTotal, // This is actually the final total
+                    tierMultiplier: 1, // Tier system removed
+                    finalTotal: finalTotal,
+                    percentageOfSupply: percentageOfSupply,
+                    totalSupply: totalSupply,
+                    dollarValue: dollarValue,
+                    fdv: fdv,
+                    tokenPrice: tokenPrice.toFixed(6)
+                };
+
+                showResults(results);
+                
+            } catch (error) {
+                alert('Hesaplama hatası: ' + error.message);
+                console.error('Calculation error:', error);
+            }
+        }
+
+        function getConfigFromInputs() {
+            return {
+                nft: {
+                    tokenSupply: parseFloat(document.getElementById('nftTokenSupply').value),
+                    equalDistPercent: parseFloat(document.getElementById('equalDistPercent').value),
+                    rarityDistPercent: parseFloat(document.getElementById('rarityDistPercent').value),
+                    rarityPercentiles: document.getElementById('rarityPercentiles').value.split(',').map(x => parseFloat(x.trim())),
+                    rarityWeights: document.getElementById('rarityWeights').value.split(',').map(x => parseFloat(x.trim())),
+                    userNFTs: getUserNFTs()
+                },
+                historic: {
+                    totalSupply: parseFloat(document.getElementById('historicTotalSupply').value),
+                    historicalSplit: parseFloat(document.getElementById('historicalSplit').value),
+                    communitySplit: parseFloat(document.getElementById('communitySplit').value),
+                    auraSplit: parseFloat(document.getElementById('auraSplit').value),
+                    // Historical activities
+                    numThreads: parseFloat(document.getElementById('numThreads').value),
+                    numComments: parseFloat(document.getElementById('numComments').value),
+                    numUpvotes: parseFloat(document.getElementById('numUpvotes').value),
+                    // Community activities (hidden)
+                    eventParticipation: 0,
+                    discordActivity: 0,
+                    referralCount: 0,
+                    contestWins: 0,
+                    // Aura
+                    totalXP: parseFloat(document.getElementById('totalXP').value)
+                },
+                global: {
+                    totalNFTs: parseFloat(document.getElementById('totalNFTs').value),
+                    totalHistoricalScore: parseFloat(document.getElementById('totalHistoricalScore').value),
+                    totalCommunityScore: parseFloat(document.getElementById('totalCommunityScore').value),
+                    totalAuraScore: parseFloat(document.getElementById('totalAuraScore').value)
+                }
+            };
+        }
+
+        function getUserNFTs() {
+            const nfts = [];
+            
+            // Common NFTs
+            const commonCount = parseInt(document.getElementById('commonNFTs').value) || 0;
+            for (let i = 0; i < commonCount; i++) {
+                nfts.push({ id: i + 1, rarityIndex: 0 });
+            }
+            
+            // Uncommon NFTs
+            const uncommonCount = parseInt(document.getElementById('uncommonNFTs').value) || 0;
+            for (let i = 0; i < uncommonCount; i++) {
+                nfts.push({ id: i + 1000, rarityIndex: 1 });
+            }
+            
+            // Rare NFTs
+            const rareCount = parseInt(document.getElementById('rareNFTs').value) || 0;
+            for (let i = 0; i < rareCount; i++) {
+                nfts.push({ id: i + 2000, rarityIndex: 2 });
+            }
+            
+            // Epic NFTs
+            const epicCount = parseInt(document.getElementById('epicNFTs').value) || 0;
+            for (let i = 0; i < epicCount; i++) {
+                nfts.push({ id: i + 3000, rarityIndex: 3 });
+            }
+            
+            // Legendary NFTs
+            const legendaryCount = parseInt(document.getElementById('legendaryNFTs').value) || 0;
+            for (let i = 0; i < legendaryCount; i++) {
+                nfts.push({ id: i + 4000, rarityIndex: 4 });
+            }
+            
+            return nfts;
+        }
+
+        function calculateNFTAllocation(config) {
+            const { nft, global } = config;
+            const userNFTCount = nft.userNFTs.length;
+            
+            if (userNFTCount === 0) {
+                return { 
+                    equal: 0, 
+                    rarity: 0, 
+                    total: 0,
+                    userRarityScore: 0,
+                    estimatedTotalRarityScore: 0
+                };
+            }
+
+            // Equal distribution calculation
+            const equalPool = nft.tokenSupply * nft.equalDistPercent;
+            const equalPerNFT = equalPool / global.totalNFTs;
+            const userEqualAllocation = equalPerNFT * userNFTCount;
+
+            // Rarity distribution calculation
+            const rarityPool = nft.tokenSupply * nft.rarityDistPercent;
+            let userRarityScore = 0;
+            
+            nft.userNFTs.forEach(nftItem => {
+                const weight = nft.rarityWeights[nftItem.rarityIndex] || 1;
+                userRarityScore += weight;
+            });
+
+            // Estimate total rarity score (this would normally come from all users' NFTs)
+            // For now, we'll use a simple estimation based on average rarity distribution
+            const avgRarityWeight = nft.rarityWeights.reduce((a, b) => a + b, 0) / nft.rarityWeights.length;
+            const estimatedTotalRarityScore = global.totalNFTs * avgRarityWeight;
+            
+            const userRarityAllocation = rarityPool * (userRarityScore / estimatedTotalRarityScore);
+
+            return {
+                equal: userEqualAllocation,
+                rarity: userRarityAllocation,
+                total: userEqualAllocation + userRarityAllocation,
+                userRarityScore: userRarityScore,
+                estimatedTotalRarityScore: estimatedTotalRarityScore
+            };
+        }
+
+        function calculateHistoricalAllocation(config) {
+            const { historic, global } = config;
+            const historicalPool = historic.totalSupply * historic.historicalSplit;
+            
+            // Get weights from inputs (user can customize these)
+            const threadWeight = parseFloat(document.getElementById('threadWeight')?.value) || 10;
+            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 2;
+            const upvoteWeight = parseFloat(document.getElementById('upvoteWeight')?.value) || 1;
+            
+            // Calculate base score
+            const userHistoricalScore = (historic.numThreads * threadWeight) + 
+                                      (historic.numComments * commentWeight) +
+                                      (historic.numUpvotes * upvoteWeight);
+            
+            // Calculate allocation
+            const userAllocation = historicalPool * (userHistoricalScore / global.totalHistoricalScore);
+            
+            return userAllocation;
+        }
+
+        function calculateCommunityAllocation(config) {
+            const { historic, global } = config;
+            const communityPool = historic.totalSupply * historic.communitySplit;
+            
+            // Calculate user's community score
+            const eventWeight = 50;      // Each event participation worth 50 points
+            const discordWeight = 10;    // Discord activity worth 10 points
+            const referralWeight = 25;   // Each referral worth 25 points
+            const contestWeight = 100;   // Each contest win worth 100 points
+            
+            const userCommunityScore = (historic.eventParticipation * eventWeight) + 
+                                     (historic.discordActivity * discordWeight) +
+                                     (historic.referralCount * referralWeight) +
+                                     (historic.contestWins * contestWeight);
+            
+            // Calculate allocation
+            const userAllocation = communityPool * (userCommunityScore / global.totalCommunityScore);
+            
+            return userAllocation;
+        }
+
+        function calculateAuraAllocation(config) {
+            const { historic, global } = config;
+            const auraPool = historic.totalSupply * historic.auraSplit;
+            
+            // No tier multiplier - assume total aura score already includes tier weighting
+            const userAuraScore = historic.totalXP;
+            
+            // Calculate allocation
+            const userAllocation = auraPool * (userAuraScore / global.totalAuraScore);
+            
+            return userAllocation;
+        }
+
+        function showResults(results) {
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+            
+            // Get some additional info for breakdown
+            const config = getConfigFromInputs();
+            const nftCount = config.nft.userNFTs.length;
+            
+            // Get NFT breakdown
+            const commonCount = parseInt(document.getElementById('commonNFTs').value) || 0;
+            const uncommonCount = parseInt(document.getElementById('uncommonNFTs').value) || 0;
+            const rareCount = parseInt(document.getElementById('rareNFTs').value) || 0;
+            const epicCount = parseInt(document.getElementById('epicNFTs').value) || 0;
+            const legendaryCount = parseInt(document.getElementById('legendaryNFTs').value) || 0;
+            
+            resultsContent.innerHTML = `
+                <div class="result-item">
+                    <span class="result-label">NFT Equal Distribution:</span>
+                    <span class="result-value">${formatNumber(results.nftEqual)} tokens ${results.dollarValue ? `($${formatNumber(results.nftEqual * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">NFT Rarity Distribution:</span>
+                    <span class="result-value">${formatNumber(results.nftRarity)} tokens ${results.dollarValue ? `($${formatNumber(results.nftRarity * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">NFT Toplam:</span>
+                    <span class="result-value">${formatNumber(results.nftTotal)} tokens ${results.dollarValue ? `($${formatNumber(results.nftTotal * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Historical Allocation:</span>
+                    <span class="result-value">${formatNumber(results.historical)} tokens ${results.dollarValue ? `($${formatNumber(results.historical * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>
+                ${results.community > 0 ? `
+                <div class="result-item">
+                    <span class="result-label">Community Allocation:</span>
+                    <span class="result-value">${formatNumber(results.community)} tokens ${results.dollarValue ? `($${formatNumber(results.community * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>` : ''}
+                <div class="result-item">
+                    <span class="result-label">Aura Allocation:</span>
+                    <span class="result-value">${formatNumber(results.aura)} tokens ${results.dollarValue ? `($${formatNumber(results.aura * parseFloat(results.tokenPrice))})` : ''}</span>
+                </div>
+                <div class="result-item final-result">
+                    <span class="result-label">TOPLAM ALLOCATION:</span>
+                    <span class="result-value">${formatNumber(results.finalTotal)} tokens ${results.dollarValue ? `($${formatNumber(results.dollarValue)})` : ''}</span>
+                </div>
+                <div class="result-item percentage-result">
+                    <span class="result-label">Supply'dan Payınız:</span>
+                    <span class="result-value">${results.percentageOfSupply.toFixed(4)}%</span>
+                </div>
+                
+                ${results.dollarValue ? `
+                <div class="result-item dollar-result">
+                    <span class="result-label">Tahmini Dolar Değeri:</span>
+                    <span class="result-value">$${formatNumber(results.dollarValue)}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Token Fiyatı:</span>
+                    <span class="result-value">$${results.tokenPrice}</span>
+                </div>` : ''}
+                
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e5e7eb;">
+                    <h3 style="color: #374151; margin-bottom: 12px; font-size: 1rem;">Hesaplama Detayları</h3>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <strong>NFT Hesaplama:</strong><br>
+                        • NFT Koleksiyonunuz: ${commonCount > 0 ? `${commonCount} Common` : ''}${uncommonCount > 0 ? ` • ${uncommonCount} Uncommon` : ''}${rareCount > 0 ? ` • ${rareCount} Rare` : ''}${epicCount > 0 ? ` • ${epicCount} Epic` : ''}${legendaryCount > 0 ? ` • ${legendaryCount} Legendary` : ''}<br>
+                        • Toplam NFT sayısı: ${nftCount}<br>
+                        • Equal pool per NFT: ${formatNumber(config.nft.tokenSupply * config.nft.equalDistPercent / config.global.totalNFTs)}<br>
+                        • User rarity score: ${formatNumber(results.userRarityScore || 0)}<br>
+                        <hr style="margin: 10px 0; opacity: 0.3;">
+                        <strong>NFT Pool:</strong> ${formatNumber(config.nft.tokenSupply)} token (%0.85)<br>
+                        <strong>Equal Allocation:</strong> ${formatNumber(results.nftEqual)} token ${results.dollarValue ? `($${formatNumber(results.nftEqual * parseFloat(results.tokenPrice))})` : ''}<br>
+                        <strong>Rarity Allocation:</strong> ${formatNumber(results.nftRarity)} token ${results.dollarValue ? `($${formatNumber(results.nftRarity * parseFloat(results.tokenPrice))})` : ''}<br>
+                        <strong>Sizin NFT Payınız:</strong> ${formatNumber(results.nftTotal)} token ${results.dollarValue ? `($${formatNumber(results.nftTotal * parseFloat(results.tokenPrice))})` : ''}
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <strong>Historical Hesaplama:</strong><br>
+                        • Threads: ${config.historic.numThreads} × ${document.getElementById('threadWeight')?.value || 10} = ${config.historic.numThreads * (parseFloat(document.getElementById('threadWeight')?.value) || 10)}<br>
+                        • Comments: ${config.historic.numComments} × ${document.getElementById('commentWeight')?.value || 2} = ${config.historic.numComments * (parseFloat(document.getElementById('commentWeight')?.value) || 2)}<br>
+                        • Upvotes: ${config.historic.numUpvotes} × ${document.getElementById('upvoteWeight')?.value || 1} = ${config.historic.numUpvotes * (parseFloat(document.getElementById('upvoteWeight')?.value) || 1)}<br>
+                        • <strong>Sizin Historical Score: ${((config.historic.numThreads || 0) * (parseFloat(document.getElementById('threadWeight')?.value) || 10)) + 
+                                                           ((config.historic.numComments || 0) * (parseFloat(document.getElementById('commentWeight')?.value) || 2)) + 
+                                                           ((config.historic.numUpvotes || 0) * (parseFloat(document.getElementById('upvoteWeight')?.value) || 1))}</strong><br>
+                        <hr style="margin: 10px 0; opacity: 0.3;">
+                        <strong>Historical Pool:</strong> ${formatNumber(5000000)} token (%0.05)<br>
+                        <strong>Sizin Payınız:</strong> ${formatNumber(results.historical)} token ${results.dollarValue ? `($${formatNumber(results.historical * parseFloat(results.tokenPrice))})` : ''}
+                    </div>
+                    ${config.historic.communitySplit > 0 ? `
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <strong>👥 Community Hesaplama:</strong><br>
+                        • Event Participation: ${config.historic.eventParticipation} × 50 = ${config.historic.eventParticipation * 50}<br>
+                        • Discord Activity: ${config.historic.discordActivity} × 10 = ${config.historic.discordActivity * 10}<br>
+                        • Referrals: ${config.historic.referralCount} × 25 = ${config.historic.referralCount * 25}<br>
+                        • Contest Wins: ${config.historic.contestWins} × 100 = ${config.historic.contestWins * 100}<br>
+                        • <strong>Toplam Community Score: ${(config.historic.eventParticipation * 50) + (config.historic.discordActivity * 10) + (config.historic.referralCount * 25) + (config.historic.contestWins * 100)}</strong>
+                    </div>` : ''}
+                    <div style="background: white; padding: 15px; border-radius: 8px;">
+                        <strong>Aura Hesaplama:</strong><br>
+                        • Sizin XP: ${formatNumber(config.historic.totalXP)}<br>
+                        • Toplam Aura Score: ${formatNumber(2650000)} (tier ağırlıklı)<br>
+                        <hr style="margin: 10px 0; opacity: 0.3;">
+                        <strong>Aura Pool:</strong> ${formatNumber(50000000)} token (%0.5)<br>
+                        <strong>Sizin Payınız:</strong> ${formatNumber(results.aura)} token ${results.dollarValue ? `($${formatNumber(results.aura * parseFloat(results.tokenPrice))})` : ''}
+                    </div>
+                </div>
+            `;
+            
+            resultsDiv.style.display = 'block';
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('tr-TR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(num);
+        }
+
+
+        // Calculate total historical score based on weights
+        function calculateTotalHistoricalScore() {
+            const threadWeight = parseFloat(document.getElementById('threadWeight')?.value) || 10;
+            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 2;
+            const upvoteWeight = parseFloat(document.getElementById('upvoteWeight')?.value) || 1;
+            
+            // Real project data from screenshot
+            const totalThreads = 73971;
+            const totalComments = 174640;
+            const totalUpvotes = 158755;
+            
+            const totalScore = (totalThreads * threadWeight) + (totalComments * commentWeight) + (totalUpvotes * upvoteWeight);
+            
+            // Update the input and info
+            document.getElementById('totalHistoricalScore').value = totalScore;
+            document.getElementById('historicalScoreBreakdown').innerHTML = 
+                `${totalThreads.toLocaleString()} threads × ${threadWeight} + ${totalComments.toLocaleString()} comments × ${commentWeight} + ${totalUpvotes.toLocaleString()} upvotes × ${upvoteWeight} = ${totalScore.toLocaleString()}`;
+        }
+        
+        // Update total historical score when weights change
+        document.getElementById('threadWeight')?.addEventListener('input', calculateTotalHistoricalScore);
+        document.getElementById('commentWeight')?.addEventListener('input', calculateTotalHistoricalScore);
+        document.getElementById('upvoteWeight')?.addEventListener('input', calculateTotalHistoricalScore);
+        
+        // Calculate initial score
+        calculateTotalHistoricalScore();
+        
+        // Update token price when FDV changes
+        document.getElementById('fdvSelection').addEventListener('change', function() {
+            const fdv = parseFloat(this.value) || 0;
+            const totalSupply = 10000000000; // 10 billion
+            
+            if (fdv > 0) {
+                const tokenPrice = fdv / totalSupply;
+                document.getElementById('tokenPrice').textContent = tokenPrice.toFixed(6);
+                document.getElementById('tokenPriceDisplay').style.display = 'block';
+            } else {
+                document.getElementById('tokenPriceDisplay').style.display = 'none';
+            }
+        });
+        
+        // Initialize FDV display
+        document.getElementById('fdvSelection').dispatchEvent(new Event('change'));
+
+        // Input validation
+        document.getElementById('equalDistPercent').addEventListener('input', function() {
+            const rarityInput = document.getElementById('rarityDistPercent');
+            const equalValue = parseFloat(this.value) || 0;
+            rarityInput.value = (1 - equalValue).toFixed(1);
+        });
+
+        document.getElementById('rarityDistPercent').addEventListener('input', function() {
+            const equalInput = document.getElementById('equalDistPercent');
+            const rarityValue = parseFloat(this.value) || 0;
+            equalInput.value = (1 - rarityValue).toFixed(1);
+        });
+
+        document.getElementById('historicalSplit').addEventListener('input', function() {
+            const communityInput = document.getElementById('communitySplit');
+            const auraInput = document.getElementById('auraSplit');
+            const historicalValue = parseFloat(this.value) || 0;
+            const remaining = 1 - historicalValue;
+            const communityValue = remaining / 2;
+            communityInput.value = communityValue.toFixed(2);
+            auraInput.value = communityValue.toFixed(2);
+        });
+
+        document.getElementById('communitySplit').addEventListener('input', function() {
+            const historicalInput = document.getElementById('historicalSplit');
+            const auraInput = document.getElementById('auraSplit');
+            const communityValue = parseFloat(this.value) || 0;
+            const remaining = 1 - communityValue;
+            const otherValue = remaining / 2;
+            historicalInput.value = otherValue.toFixed(2);
+            auraInput.value = otherValue.toFixed(2);
+        });
+
+        document.getElementById('auraSplit').addEventListener('input', function() {
+            const historicalInput = document.getElementById('historicalSplit');
+            const communityInput = document.getElementById('communitySplit');
+            const auraValue = parseFloat(this.value) || 0;
+            const remaining = 1 - auraValue;
+            const otherValue = remaining / 2;
+            historicalInput.value = otherValue.toFixed(2);
+            communityInput.value = otherValue.toFixed(2);
+        });
+    </script>
+</body>
+</html>
