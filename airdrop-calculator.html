@@ -389,15 +389,15 @@
                 
                 <div class="info-box">
                     <strong>Token Dağılımı:</strong><br>
-                    Historical: 50M (%0.5) • Aura: 50M (%0.5) • NFT: 85M (%0.85)<br>
-                    Toplam Airdrop: 185M (%1.85) • Total Supply: 10B
+                    Historical: 32.5M (%0.325) • Aura: 32.5M (%0.325) • NFT: 85M (%0.85)<br>
+                    Toplam Airdrop: 150M (%1.5) • Total Supply: 10B
                 </div>
 
                 <div class="form-group">
                     <label>Total Historical+Aura Supply</label>
-                    <input type="number" id="historicTotalSupply" value="100000000" min="0" readonly style="background: #f1f5f9;">
+                    <input type="number" id="historicTotalSupply" value="65000000" min="0" readonly style="background: #f1f5f9;">
                     <div class="info-box">
-                        Sabit: 100M token (50M Historical + 50M Aura)
+                        Sabit: 65M token (32.5M Historical + 32.5M Aura)
                     </div>
                 </div>
 
@@ -405,12 +405,12 @@
                     <div class="form-group">
                         <label>Historical Allocation</label>
                         <input type="number" id="historicalSplit" value="0.5" min="0" max="1" step="0.01">
-                        <div class="info-box">Düzenlenebilir - Default: 50M token (%50)</div>
+                        <div class="info-box">Düzenlenebilir - Default: 32.5M token (%50)</div>
                     </div>
                     <div class="form-group">
                         <label>Aura Allocation</label>
                         <input type="number" id="auraSplit" value="0.5" min="0" max="1" step="0.01">
-                        <div class="info-box">Düzenlenebilir - Default: 50M token (%50)</div>
+                        <div class="info-box">Düzenlenebilir - Default: 32.5M token (%50)</div>
                     </div>
                 </div>
                 
@@ -916,7 +916,7 @@
                                                            ((config.historic.numComments || 0) * (parseFloat(document.getElementById('commentWeight')?.value) || 2)) + 
                                                            ((config.historic.numUpvotes || 0) * (parseFloat(document.getElementById('upvoteWeight')?.value) || 1))}</strong><br>
                         <hr style="margin: 10px 0; opacity: 0.3;">
-                        <strong>Historical Pool:</strong> ${formatNumber(50000000)} token (%0.5)<br>
+                        <strong>Historical Pool:</strong> ${formatNumber(32500000)} token (%0.325)<br>
                         <strong>Sizin Payınız:</strong> ${formatNumber(results.historical)} token ${results.dollarValue ? `($${formatNumber(results.historical * parseFloat(results.tokenPrice))})` : ''}
                     </div>
                     ${config.historic.communitySplit > 0 ? `
@@ -933,7 +933,7 @@
                         • Sizin XP: ${formatNumber(config.historic.totalXP)}<br>
                         • Toplam Aura Score: ${formatNumber(2718336)}<br>
                         <hr style="margin: 10px 0; opacity: 0.3;">
-                        <strong>Aura Pool:</strong> ${formatNumber(50000000)} token (%0.5)<br>
+                        <strong>Aura Pool:</strong> ${formatNumber(32500000)} token (%0.325)<br>
                         <strong>Sizin Payınız:</strong> ${formatNumber(results.aura)} token ${results.dollarValue ? `($${formatNumber(results.aura * parseFloat(results.tokenPrice))})` : ''}
                     </div>
                 </div>
