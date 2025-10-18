@@ -354,7 +354,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Common NFT Adeti</label>
-                            <input type="number" id="commonNFTs" value="3" min="0" placeholder="0">
+                            <input type="number" id="commonNFTs" value="1" min="0" placeholder="0">
                             <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">1x ağırlık</div>
                         </div>
                         <div class="form-group">
@@ -377,7 +377,7 @@
                     </div>
                     <div class="form-group">
                         <label>Legendary NFT Adeti</label>
-                            <input type="number" id="legendaryNFTs" value="1" min="0" placeholder="0">
+                            <input type="number" id="legendaryNFTs" value="0" min="0" placeholder="0">
                         <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">50x ağırlık</div>
                     </div>
                 </div>
@@ -404,13 +404,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Historical Allocation</label>
-                        <input type="number" id="historicalSplit" value="0.5" min="0" max="1" step="0.01" readonly style="background: #f1f5f9;">
-                        <div class="info-box">50M token (%50)</div>
+                        <input type="number" id="historicalSplit" value="0.5" min="0" max="1" step="0.01">
+                        <div class="info-box">Düzenlenebilir - Default: 50M token (%50)</div>
                     </div>
                     <div class="form-group">
                         <label>Aura Allocation</label>
-                        <input type="number" id="auraSplit" value="0.5" min="0" max="1" step="0.01" readonly style="background: #f1f5f9;">
-                        <div class="info-box">50M token (%50)</div>
+                        <input type="number" id="auraSplit" value="0.5" min="0" max="1" step="0.01">
+                        <div class="info-box">Düzenlenebilir - Default: 50M token (%50)</div>
                     </div>
                 </div>
                 
@@ -432,7 +432,7 @@
                     <div class="form-group">
                         <label>Comment Sayısı</label>
                         <input type="number" id="numComments" value="85" min="0">
-                        <input type="number" id="commentWeight" value="2" min="1" style="width: 60px; display: inline-block; margin-left: 8px;" onchange="calculateTotalHistoricalScore()">
+                        <input type="number" id="commentWeight" value="5" min="1" style="width: 60px; display: inline-block; margin-left: 8px;" onchange="calculateTotalHistoricalScore()">
                         <span style="font-size: 12px; color: #666;"> puan</span>
                     </div>
                 </div>
@@ -464,8 +464,9 @@
                     <label>Fully Diluted Valuation (FDV)</label>
                     <select id="fdvSelection" style="font-size: 16px; font-weight: bold;">
                         <option value="0">FDV Seçiniz</option>
+                        <option value="250000000" selected>$250M</option>
                         <option value="350000000">$350M</option>
-                        <option value="500000000" selected>$500M</option>
+                        <option value="500000000">$500M</option>
                         <option value="750000000">$750M</option>
                         <option value="1000000000">$1B</option>
                         <option value="1500000000">$1.5B</option>
@@ -502,6 +503,30 @@
                     </div>
                 </div>
 
+                <h3 style="margin: 16px 0 12px 0; font-size: 1rem; color: #374151;">Global Historical Data</h3>
+                <div class="info-box">
+                    Bu değerleri değiştirerek toplam historical score'u güncelleyebilirsiniz.
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Total Threads (Global)</label>
+                        <input type="number" id="totalThreadsGlobal" value="75181" min="1" onchange="calculateTotalHistoricalScore()">
+                        <div class="info-box">Düzenlenebilir - Default: 75,181 thread</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Comments (Global)</label>
+                        <input type="number" id="totalCommentsGlobal" value="193360" min="1" onchange="calculateTotalHistoricalScore()">
+                        <div class="info-box">Düzenlenebilir - Default: 193,360 comment</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Total Upvotes (Global)</label>
+                    <input type="number" id="totalUpvotesGlobal" value="163504" min="1" onchange="calculateTotalHistoricalScore()">
+                    <div class="info-box">Düzenlenebilir - Default: 163,504 upvote</div>
+                </div>
+
                     <div class="form-group">
                         <label>Toplam Historical Score (Tüm Kullanıcılar)</label>
                         <input type="number" id="totalHistoricalScore" value="1088990" min="1" readonly style="background: #f1f5f9;">
@@ -514,11 +539,12 @@
 
                 <div class="form-group">
                     <label>Toplam Aura Score (Tüm Kullanıcılar)</label>
-                    <input type="number" id="totalAuraScore" value="2650000" min="1" readonly style="background: #f1f5f9;">
+                    <input type="number" id="totalAuraScore" value="2718336" min="1" readonly style="background: #f1f5f9;">
                     <div class="info-box">
-                        Gerçek veri: 2,650,000 total aura
+                        Gerçek veri: 2,718,336 total aura
                     </div>
                 </div>
+
             </div>
 
             <button class="calculate-btn" onclick="calculateAllocation()">
@@ -759,7 +785,7 @@
             
             // Get weights from inputs (user can customize these)
             const threadWeight = parseFloat(document.getElementById('threadWeight')?.value) || 10;
-            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 2;
+            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 5;
             const upvoteWeight = parseFloat(document.getElementById('upvoteWeight')?.value) || 1;
             
             // Calculate base score
@@ -905,7 +931,7 @@
                     <div style="background: white; padding: 15px; border-radius: 8px;">
                         <strong>Aura Hesaplama:</strong><br>
                         • Sizin XP: ${formatNumber(config.historic.totalXP)}<br>
-                        • Toplam Aura Score: ${formatNumber(2650000)} (tier ağırlıklı)<br>
+                        • Toplam Aura Score: ${formatNumber(2718336)}<br>
                         <hr style="margin: 10px 0; opacity: 0.3;">
                         <strong>Aura Pool:</strong> ${formatNumber(50000000)} token (%0.5)<br>
                         <strong>Sizin Payınız:</strong> ${formatNumber(results.aura)} token ${results.dollarValue ? `($${formatNumber(results.aura * parseFloat(results.tokenPrice))})` : ''}
@@ -928,13 +954,13 @@
         // Calculate total historical score based on weights
         function calculateTotalHistoricalScore() {
             const threadWeight = parseFloat(document.getElementById('threadWeight')?.value) || 10;
-            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 2;
+            const commentWeight = parseFloat(document.getElementById('commentWeight')?.value) || 5;
             const upvoteWeight = parseFloat(document.getElementById('upvoteWeight')?.value) || 1;
             
-            // Real project data from screenshot
-            const totalThreads = 73971;
-            const totalComments = 174640;
-            const totalUpvotes = 158755;
+            // Get editable global data
+            const totalThreads = parseFloat(document.getElementById('totalThreadsGlobal')?.value) || 75181;
+            const totalComments = parseFloat(document.getElementById('totalCommentsGlobal')?.value) || 193360;
+            const totalUpvotes = parseFloat(document.getElementById('totalUpvotesGlobal')?.value) || 163504;
             
             const totalScore = (totalThreads * threadWeight) + (totalComments * commentWeight) + (totalUpvotes * upvoteWeight);
             
@@ -944,10 +970,13 @@
                 `${totalThreads.toLocaleString()} threads × ${threadWeight} + ${totalComments.toLocaleString()} comments × ${commentWeight} + ${totalUpvotes.toLocaleString()} upvotes × ${upvoteWeight} = ${totalScore.toLocaleString()}`;
         }
         
-        // Update total historical score when weights change
+        // Update total historical score when weights or global values change
         document.getElementById('threadWeight')?.addEventListener('input', calculateTotalHistoricalScore);
         document.getElementById('commentWeight')?.addEventListener('input', calculateTotalHistoricalScore);
         document.getElementById('upvoteWeight')?.addEventListener('input', calculateTotalHistoricalScore);
+        document.getElementById('totalThreadsGlobal')?.addEventListener('input', calculateTotalHistoricalScore);
+        document.getElementById('totalCommentsGlobal')?.addEventListener('input', calculateTotalHistoricalScore);
+        document.getElementById('totalUpvotesGlobal')?.addEventListener('input', calculateTotalHistoricalScore);
         
         // Calculate initial score
         calculateTotalHistoricalScore();
