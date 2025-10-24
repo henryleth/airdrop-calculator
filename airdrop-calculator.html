@@ -511,8 +511,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Total Threads (Global)</label>
-                        <input type="number" id="totalThreadsGlobal" value="75181" min="1" onchange="calculateTotalHistoricalScore()">
-                        <div class="info-box">Düzenlenebilir - Default: 75,181 thread</div>
+                        <input type="number" id="totalThreadsGlobal" value="76246" min="1" onchange="calculateTotalHistoricalScore()">
+                        <div class="info-box">Düzenlenebilir - Default: 76,246 thread</div>
                     </div>
                     <div class="form-group">
                         <label>Total Comments (Global)</label>
@@ -539,9 +539,9 @@
 
                 <div class="form-group">
                     <label>Toplam Aura Score (Tüm Kullanıcılar)</label>
-                    <input type="number" id="totalAuraScore" value="2718336" min="1" readonly style="background: #f1f5f9;">
+                    <input type="number" id="totalAuraScore" value="2799686" min="1" onchange="calculateAllocation()">
                     <div class="info-box">
-                        Gerçek veri: 2,718,336 total aura
+                        Düzenlenebilir - Default: 2,799,686 total aura
                     </div>
                 </div>
 
@@ -828,7 +828,7 @@
             const userAuraScore = historic.totalXP;
             
             // Calculate allocation
-            const userAllocation = auraPool * (userAuraScore / global.totalAuraScore);
+            const userAllocation = auraPool * (userAuraScore / parseFloat(document.getElementById('totalAuraScore').value));
             
             return userAllocation;
         }
@@ -931,7 +931,7 @@
                     <div style="background: white; padding: 15px; border-radius: 8px;">
                         <strong>Aura Hesaplama:</strong><br>
                         • Sizin XP: ${formatNumber(config.historic.totalXP)}<br>
-                        • Toplam Aura Score: ${formatNumber(2718336)}<br>
+                        • Toplam Aura Score: ${formatNumber(config.global.totalAuraScore)}<br>
                         <hr style="margin: 10px 0; opacity: 0.3;">
                         <strong>Aura Pool:</strong> ${formatNumber(36000000)} token (%0.36)<br>
                         <strong>Sizin Payınız:</strong> ${formatNumber(results.aura)} token ${results.dollarValue ? `($${formatNumber(results.aura * parseFloat(results.tokenPrice))})` : ''}
@@ -958,7 +958,7 @@
             const upvoteWeight = parseFloat(document.getElementById('upvoteWeight')?.value) || 1;
             
             // Get editable global data
-            const totalThreads = parseFloat(document.getElementById('totalThreadsGlobal')?.value) || 75181;
+            const totalThreads = parseFloat(document.getElementById('totalThreadsGlobal')?.value) || 76246;
             const totalComments = parseFloat(document.getElementById('totalCommentsGlobal')?.value) || 193360;
             const totalUpvotes = parseFloat(document.getElementById('totalUpvotesGlobal')?.value) || 163504;
             
