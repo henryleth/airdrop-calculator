@@ -485,8 +485,23 @@
                 </div>
             </div>
 
-            <!-- Hidden User Tier (for compatibility, always set to 1) -->
-            <input type="hidden" id="userTier" value="1">
+            <!-- User Tier Selection -->
+            <div class="section">
+                <h2>Kullanıcı Tier Seçimi</h2>
+                <div class="form-group">
+                    <label>Kullanıcı Tier'ı</label>
+                    <select id="userTier" style="font-size: 16px; font-weight: bold;">
+                        <option value="1">Tier 1 (1x)</option>
+                        <option value="2">Tier 2 (2x)</option>
+                        <option value="3">Tier 3 (3x)</option>
+                        <option value="4">Tier 4 (4x)</option>
+                        <option value="5">Tier 5 (5x)</option>
+                    </select>
+                    <div class="info-box">
+                        Seçtiğiniz Tier'a göre alokasyon çarpanınız uygulanacaktır.
+                    </div>
+                </div>
+            </div>
 
             <!-- Global Pools Section -->
             <div class="section">
@@ -604,19 +619,23 @@
                 
                 const userTierMultiplier = parseFloat(document.getElementById('userTier').value);
                 
-                // Tier system removed for simplicity
-
                 // Calculate NFT allocation
-                const nftAllocation = calculateNFTAllocation(config);
+                let nftAllocation = calculateNFTAllocation(config);
+                nftAllocation.total *= userTierMultiplier;
+                nftAllocation.equal *= userTierMultiplier;
+                nftAllocation.rarity *= userTierMultiplier;
                 
                 // Calculate Historical allocation
-                const historicalAllocation = calculateHistoricalAllocation(config);
+                let historicalAllocation = calculateHistoricalAllocation(config);
+                historicalAllocation *= userTierMultiplier;
                 
                 // Calculate Community allocation
-                const communityAllocation = calculateCommunityAllocation(config);
+                let communityAllocation = calculateCommunityAllocation(config);
+                communityAllocation *= userTierMultiplier;
                 
                 // Calculate Aura allocation
-                const auraAllocation = calculateAuraAllocation(config);
+                let auraAllocation = calculateAuraAllocation(config);
+                auraAllocation *= userTierMultiplier;
                 
                 // Calculate totals (tier multiplier already applied in scripts!)
                 const finalTotal = nftAllocation.total + historicalAllocation + communityAllocation + auraAllocation;
@@ -646,7 +665,7 @@
                     community: communityAllocation,
                     aura: auraAllocation,
                     totalBeforeTier: finalTotal, // This is actually the final total
-                    tierMultiplier: 1, // Tier system removed
+                    tierMultiplier: userTierMultiplier, // Tier system removed
                     finalTotal: finalTotal,
                     percentageOfSupply: percentageOfSupply,
                     totalSupply: totalSupply,
@@ -695,7 +714,8 @@
                     totalHistoricalScore: parseFloat(document.getElementById('totalHistoricalScore').value),
                     totalCommunityScore: parseFloat(document.getElementById('totalCommunityScore').value),
                     totalAuraScore: parseFloat(document.getElementById('totalAuraScore').value)
-                }
+                },
+                userTierMultiplier: parseFloat(document.getElementById('userTier').value) || 1
             };
         }
 
