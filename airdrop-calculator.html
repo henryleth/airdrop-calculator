@@ -348,6 +348,25 @@
                     <label>Rarity Weights by Percentile (virgülle ayırın)</label>
                     <input type="text" id="rarityWeights" value="1,5,10,20,50">
                 </div>
+                <details style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin-top: 10px; margin-bottom: 20px; border: 1px solid #bae6fd;">
+                    <summary style="font-weight: 600; cursor: pointer; color: #0c4a6e;">NFT Nadirlik Puanı Hesaplama Detayları</summary>
+                    <div style="padding-top: 10px; font-size: 13px;">
+                        <p style="margin-bottom: 8px;">Nadirlik yüzdelikleri (Rarity Percentiles) ve ağırlıkları (Rarity Weights), NFT'lerinizin airdrop'tan alacağı payı etkiler. Nadirlik puanınız, sahip olduğunuz her bir NFT'nin türüne (Common, Uncommon vb.) göre belirlenen ağırlıkların toplamıdır.</p>
+                        <p style="margin-bottom: 8px;">Hesaplama şu şekildedir: <code>(Common NFT Sayısı * Common Ağırlığı) + (Uncommon NFT Sayısı * Uncommon Ağırlığı) + ...</code></p>
+                        <p style="margin-bottom: 8px;">Varsayılan ağırlıklar: <span style="font-weight: bold;">${config.nft.rarityWeights.join(', ')}</span> (sırasıyla Common, Uncommon, Rare, Epic, Legendary için).</p>
+                        <p style="margin-bottom: 8px;">Sizin NFT'leriniz ve puan katkıları:</p>
+                        <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 10px;">
+                            ${config.nft.userNFTs.map(nftItem => {
+                                const rarityNames = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
+                                const name = rarityNames[nftItem.rarityIndex] || 'Unknown';
+                                const weight = config.nft.rarityWeights[nftItem.rarityIndex] || 1;
+                                return `<li>${name} NFT (Ağırlık: ${weight}x) - Katkı: ${weight} puan</li>`;
+                            }).join('')}
+                        </ul>
+                        <p><strong>Sizin Toplam Nadirlik Puanınız:</strong> ${formatNumber(results.userRarityScore || 0)}</p>
+                        <p style="margin-top: 10px;"><strong>Örnek Hesaplama:</strong> Eğer 1 Common NFT (1x ağırlık) ve 1 Legendary NFT (50x ağırlık) olsaydı, sizin nadirlik puanınız 1 + 50 = 51 olurdu.</p>
+                    </div>
+                </details>
 
                 <div class="form-group">
                     <label>NFT Koleksiyonunuz</label>
@@ -907,21 +926,6 @@
                         <strong>Rarity Allocation:</strong> ${formatNumber(results.nftRarity)} token ${results.dollarValue ? `($${formatNumber(results.nftRarity * parseFloat(results.tokenPrice))})` : ''}<br>
                         <strong>Sizin NFT Payınız:</strong> ${formatNumber(results.nftTotal)} token ${results.dollarValue ? `($${formatNumber(results.nftTotal * parseFloat(results.tokenPrice))})` : ''}
                     </div>
-                    <details style="background: #f0f9ff; padding: 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #bae6fd;">
-                        <summary style="font-weight: 600; cursor: pointer; color: #0c4a6e;">NFT Nadirlik Puanı Hesaplama Detayları</summary>
-                        <div style="padding-top: 10px; font-size: 13px;">
-                            <p style="margin-bottom: 8px;">Nadirlik yüzdelikleri (Rarity Percentiles) ve ağırlıkları (Rarity Weights), NFT'lerinizin airdrop'tan alacağı payı etkiler. Aşağıda sizin NFT'leriniz için nadirlik puanının nasıl hesaplandığını görebilirsiniz:</p>
-                            <ul style="list-style-type: none; padding: 0; margin-bottom: 10px;">
-                                ${config.nft.userNFTs.map(nftItem => {
-                                    const rarityNames = ['Common', 'Uncommon', 'Rare', 'Epic', 'Legendary']; // Need to map rarityIndex to actual names
-                                    const name = rarityNames[nftItem.rarityIndex] || 'Unknown';
-                                    const weight = config.nft.rarityWeights[nftItem.rarityIndex] || 1;
-                                    return `<li>• ${name} NFT (Ağırlık: ${weight}x)</li>`;
-                                }).join('')}
-                            </ul>
-                            <p><strong>Sizin Toplam Nadirlik Puanınız:</strong> ${formatNumber(results.userRarityScore || 0)}</p>
-                        </div>
-                    </details>
                     <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
                         <strong>Historical Hesaplama:</strong><br>
                         • Threads: ${config.historic.numThreads} × ${document.getElementById('threadWeight')?.value || 10} = ${config.historic.numThreads * (parseFloat(document.getElementById('threadWeight')?.value) || 10)}<br>
